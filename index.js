@@ -2,10 +2,11 @@
 
 const { getRPC } = require("@ravenrebels/ravencoin-rpc");
 
-const express = require('express')
+const express = require('express');
+const getConfig = require("./getConfig");
 const app = express()
 
-const config = require("./config.json");
+const config = getConfig();
 const port = process.env.PORT || config.local_port || 80;
 
 
