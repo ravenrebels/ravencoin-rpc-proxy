@@ -1,4 +1,4 @@
-const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
+const { getRPC } = require("@ravenrebels/ravencoin-rpc");
 //@ravenrebels/ravencoin-rpc believes that username/password is mandatory, so just send in anything
 const username ="whatever";
 const password ="whatever";
@@ -10,15 +10,4 @@ async function work(){
     console.log(asdf);
 }
 
-work();
-/*
-const promise = rpc(methods.getassetdata, ["UGLY"]);
-promise.catch((e) => {
-    console.dir(e);
-});
-
-promise.then((response) => {    
-        console.log(response);
-});
-
-*/
+work(); 

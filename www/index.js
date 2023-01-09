@@ -128,10 +128,26 @@ async function showHelpDialog(procedure) {
       <pre><code class="language-text" id="codeExample"> ${data.result}</code></pre>
       </p>
     </article>`
-    dialog.querySelector("a").addEventListener("click", function () {
 
+    dialog.querySelector("a").addEventListener("click", function () {
         document.body.removeChild(dialog);
     })
+
+    dialog.addEventListener("click", function (event) {
+        if (event.target === dialog) {
+            document.body.removeChild(dialog);
+        }
+
+    });
+
+    //Close on escape
+    document.addEventListener('keydown', function (e) {
+        console.log(e);
+        if (e.key === "Escape") {
+            document.body.removeChild(dialog);
+        }
+    });
+
     document.body.appendChild(dialog);
     Prism.highlightAll();
 
