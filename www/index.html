@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <title>Ravencoin RPC - Testnet</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Ravencoin RPC - Testnet</h1>
+        <p>By <a href="https://twitter.com/RavenRebels">Raven Rebels</a></p>
+
+        <article>
+            <h2>Sir, what is this?</h2>
+            <p>
+                As a developer, if you want to build something for/on Ravencoin, you can kickstart your development with this RPC service.
+            </p>
+            <p>The node is fully indexed and runs on TESTNET.</p>
+            <p>You can send remote procedure calls (RPC) the same way you would if you hade a local node.
+                Whitelisted procedure calls are listed below.
+            </p>
+        </article>
+
+
+
+
+
+
+
+        <article>
+            <h3>Endpoint</h3>
+            https://rpc.ting.finance/rpc
+        </article>
+
+
+
+        <article>
+            <h3>Example - JavaScript/Node.js</h3>
+            <pre><code class="language-javascript">
+const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
+//@ravenrebels/ravencoin-rpc believes that username/password is mandatory,
+//so just send in whatever
+const username ="whatever";
+const password ="whatever";
+const rpc = getRPC(username, password, "https://rpc.ting.finance/rpc");
+
+const promise = rpc(methods.getassetdata, ["UGLY"]);
+promise.catch((e) => {
+    console.dir(e);
+});
+
+promise.then((response) => {    
+        console.log(response);
+});
+                </code>
+
+            </pre>
+            <h3>Result</h3>
+            <pre><code class="language-json">
+{
+    name: 'UGLY',
+    amount: 10000,
+    units: 0,
+    reissuable: 1,
+    has_ipfs: 1,
+    ipfs_hash: 'QmbBn9XDQrE2LA7QsUFG3puB9pfoDNgHW7Qiidvu3aNrJ3'
+}
+                </code></pre>
+
+
+
+        </article>
+        <article>
+            <h3>Whitelisted methods </h3>
+            <ul id="whitelist">
+            </ul>
+        </article>
+    </main>
+
+
+    <script>
+
+
+        async function work() {
+            const response = await fetch("/whitelist");
+            const list = await response.json();
+
+            list.map(item => {
+                const li = document.createElement("li");
+                li.innerText = item;
+                document.getElementById("whitelist").appendChild(li);
+            });
+        }
+        work();
+
+    </script>
+</body>
+
+</html>
