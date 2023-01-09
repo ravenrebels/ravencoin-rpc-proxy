@@ -7,7 +7,7 @@ const getConfig = require("./getConfig");
 const app = express()
 
 const config = getConfig();
-const port = process.env.PORT || config.local_port || 80;
+const port = config.local_port || process.env.PORT || 80;
 
 
 const rpc = getRPC(config.username, config.password, config.raven_url);
@@ -53,7 +53,7 @@ app.post("/rpc", async (req, res) => {
     res.send({ result: asdf });
 
 
-}) 
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
