@@ -1,0 +1,25 @@
+{
+  "name": "ravencoin-rpc-proxy",
+  "version": "1.0.0",
+  "description": "A proxy for Ravencoin RPC that blocks insecure calls",
+  "main": "index.js",
+  "dependencies": {
+    "@ravenrebels/ravencoin-rpc": "0.1.4",
+    "express": "4.18.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ravenrebels/ravencoin-rpc-proxy.git"
+  },
+  "keywords": ["Ravencoin"],
+  "author": "Raven Rebels (dicklarsson@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ravenrebels/ravencoin-rpc-proxy/issues"
+  },
+  "homepage": "https://github.com/ravenrebels/ravencoin-rpc-proxy#readme"
+}

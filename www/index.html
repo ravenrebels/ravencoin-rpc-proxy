@@ -19,79 +19,47 @@
         <article>
             <h2>Sir, what is this?</h2>
             <p>
-                As a developer, if you want to build something for/on Ravencoin, you can kickstart your development with this RPC service.
+                As a developer, if you want to build something for/on Ravencoin, you can kickstart your development with
+                this RPC service.
             </p>
             <p>The node is fully indexed and runs on TESTNET.</p>
             <p>You can send remote procedure calls (RPC) the same way you would if you hade a local node.
                 Whitelisted procedure calls are listed below.
             </p>
-        </article>   
+        </article>
 
         <article>
             <h3>Endpoint</h3>
             https://rpc.ting.finance/rpc
-        </article> 
-        
+        </article>
+
         <article>
             <h3>Example - JavaScript/Node.js</h3>
-            <pre><code class="language-javascript">
-const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
-//@ravenrebels/ravencoin-rpc believes that username/password is mandatory,
-//so just send in whatever
-const username ="whatever";
-const password ="whatever";
-const rpc = getRPC(username, password, "https://rpc.ting.finance/rpc");
-
-const promise = rpc(methods.getassetdata, ["UGLY"]);
-promise.catch((e) => {
-    console.dir(e);
-});
-
-promise.then((response) => {    
-        console.log(response);
-});
-                </code>
-
-            </pre>
+            <pre><code class="language-javascript" id="codeExample"> </code></pre>
             <h3>Result</h3>
-            <pre><code class="language-json">
-{
-    name: 'UGLY',
-    amount: 10000,
-    units: 0,
-    reissuable: 1,
-    has_ipfs: 1,
-    ipfs_hash: 'QmbBn9XDQrE2LA7QsUFG3puB9pfoDNgHW7Qiidvu3aNrJ3'
-}
-                </code></pre>
-
-
-
+            <pre><code class="language-javascript" id="codeExampleResult"></code></pre>
         </article>
+
+
         <article>
             <h3>Whitelisted methods </h3>
+            <p>Only these procedure calls are allowed</p>
             <ul id="whitelist">
             </ul>
         </article>
+
+        <article>
+            <h3>Ravencoin docs</h3>
+            <select id="procedureSelect">
+                <option>-</option>
+            </select>
+            <pre><code class="language-javascript" id="help"></code></pre>
+        </article>
     </main>
 
+    <script src="./index.js"></script>
 
-    <script>
 
-
-        async function work() {
-            const response = await fetch("/whitelist");
-            const list = await response.json();
-
-            list.map(item => {
-                const li = document.createElement("li");
-                li.innerText = item;
-                document.getElementById("whitelist").appendChild(li);
-            });
-        }
-        work();
-
-    </script>
 </body>
 
 </html>
