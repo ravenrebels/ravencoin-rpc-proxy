@@ -3,7 +3,7 @@ const { getRPC } = require("@ravenrebels/ravencoin-rpc");
 //so just send in whatever
 const username ="whatever";
 const password ="whatever"; 
-const rpc = getRPC(username, password, "https://rpc.ting.finance/rpc");
+const rpc = getRPC(username, password, "https://rvn-rpc-testnet.ting.finance/rpc");
 
 const promise = rpc(methods.getassetdata, ["UGLY"]);
 promise.catch((e) => {
