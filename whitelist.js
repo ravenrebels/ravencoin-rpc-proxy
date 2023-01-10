@@ -73,7 +73,7 @@ const whitelist = [
     //"viewallmessages",
 
     //== Mining ==
-    //"getblocktemplate",
+    "getblocktemplate",
     //"getkawpowhash",
     //"getmininginfo",
     //"getnetworkhashps",

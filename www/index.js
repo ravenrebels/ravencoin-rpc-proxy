@@ -20,6 +20,7 @@ async function work() {
     insertLabelBeforeValue(list, "== Rawtransactions ==", "combinerawtransaction");
     insertLabelBeforeValue(list, "== Restricted assets ==", "checkaddressrestriction")
     insertLabelBeforeValue(list, "== Util ==", "estimatefee");
+    insertLabelBeforeValue(list, "== Mining ==", "getblocktemplate")
     /*
         
         getassetdata "asset_name"

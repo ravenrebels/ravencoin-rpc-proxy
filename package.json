@@ -5,9 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "@ravenrebels/ravencoin-rpc": "0.1.4",
+    "cors": "2.8.5",
     "express": "4.18.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/ravenrebels/ravencoin-rpc-proxy.git"
   },
-  "keywords": ["Ravencoin"],
+  "keywords": [
+    "Ravencoin"
+  ],
   "author": "Raven Rebels (dicklarsson@gmail.com)",
   "license": "MIT",
   "bugs": {
