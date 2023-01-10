@@ -29,33 +29,7 @@ async function work() {
 
     const select = document.getElementById("procedureSelect");
 
-    list.map(item => {
-        const li = document.createElement("li");
-
-
-        if (item.startsWith("==") === true) {
-            li.style.listStyle = "none";
-            li.style.marginTop = "20px";
-            li.style.marginBottom = "0";
-            const h3 = document.createElement("h3");
-            h3.style.margin = "0";
-            h3.innerHTML = item;
-            li.appendChild(h3);
-        }
-        else {
-            const a = document.createElement("a");
-            a.innerHTML = item;
-
-            a.addEventListener("click", function (event) {
-
-                showHelpDialog(item);
-            })
-            li.appendChild(a);
-        }
-        document.getElementById("whitelist").appendChild(li);
-
-
-
+    list.map(item => { 
         const option = document.createElement("option");
         option.innerText = item;
         select.appendChild(option);
@@ -110,50 +84,7 @@ async function post(url, body) {
     const data = await response.json();
     return data;
 }
-
-async function showHelpDialog(procedure) {
-    const dialog = document.createElement("dialog");
-    dialog.setAttribute("open", true);
-
-    const data = await post("/rpc", { method: "help", params: [procedure] });
-    document.getElementById("help").innerHTML = data.result;
-
-
-    dialog.innerHTML = `
-    <article style="min-width: calc(80vw); font-size: 80%;">
-      <header>
-        <a href="#close" aria-label="Close" class="close"></a>
-        ${procedure}
-      </header>
-      <p>
-      <pre><code class="language-text" id="codeExample"> ${data.result}</code></pre>
-      </p>
-    </article>`
-
-    dialog.querySelector("a").addEventListener("click", function () {
-        document.body.removeChild(dialog);
-    })
-
-    dialog.addEventListener("click", function (event) {
-        if (event.target === dialog) {
-            document.body.removeChild(dialog);
-        }
-
-    });
-
-    //Close on escape
-    document.addEventListener('keydown', function (e) {
-        console.log(e);
-        if (e.key === "Escape") {
-            document.body.removeChild(dialog);
-        }
-    });
-
-    document.body.appendChild(dialog);
-    Prism.highlightAll();
-
-
-}
+ 
 
 work();
 
