@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <title></title>
+</head>
+
+<body>
+
+
+    <main class="container">
+        <h1>Ravencoin Testnet - getblockcount</h1>
+        <article id="content"></article>
+    </main>
+
+    <script>
+
+        async function post(url, body) {
+            const jsonString = JSON.stringify(body);
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: jsonString
+            };
+            const response = await fetch(url, requestOptions);
+            const data = await response.json();
+            return data;
+        }
+
+
+        async function work() {
+
+            const method = "getblockcount";
+            const params = [];
+            const asdf = await post("https://rpc.ting.finance/rpc", { method, params });
+
+            document.getElementById("content").innerHTML = asdf.result;
+            document.title = asdf.result + " RVN TESTNET";
+
+        }
+
+        work();
+        setInterval(work, 20 * 1000); //Run every 20 seconds
+    </script>
+</body>
+
+</html>
