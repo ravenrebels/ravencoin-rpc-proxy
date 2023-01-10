@@ -164,4 +164,6 @@ fetch("/settings")
     .then(settings => {
         document.getElementById("environment").innerHTML = settings.environment;
         document.getElementById("endpoint").innerHTML = settings.endpoint;
+        document.title = settings.environment;
+        document.getElementById("headline").innerHTML = "RPC - " + settings.environment;
     })
