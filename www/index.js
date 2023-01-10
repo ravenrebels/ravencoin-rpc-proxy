@@ -62,6 +62,10 @@ async function work() {
         fetch(url)
             .then(codeResponse => codeResponse.text())
             .then(code => {
+                if(url.indexOf(".html") > -1){
+                    code = code.replaceAll("<",  "&lt;");
+                }
+
                 document.getElementById(id).innerHTML = code;
                 Prism.highlightAll();
             })
@@ -70,6 +74,8 @@ async function work() {
     }
     fetchCodeExample("codeexample.js", "codeExample");
     fetchCodeExample("codeexample_result.json", "codeExampleResult");
+    fetchCodeExample("/demo/index.html", "codeExampleWeb");
+ 
 
 }
 

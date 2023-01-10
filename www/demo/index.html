@@ -9,24 +9,18 @@
 </head>
 
 <body>
-
-
     <main class="container">
         <h1>Ravencoin Testnet - getblockcount</h1>
         <article id="content"></article>
     </main>
-
-
-    <script type="module"> 
-        import axios from 'https://cdn.skypack.dev/axios'; 
-        const settingsResponse = await axios.get("/settings");
-        const settings = settingsResponse.data;
-        const response = await axios.post(settings.endpoint, { method: "getblockcount", params: [] });
-        document.title = response.data.result;
-        document.getElementById("content").innerHTML = response.data.result; 
-
+    <script type="module">
+        import axios from 'https://cdn.skypack.dev/axios';
+        //endpoint = https://rvn-rpc-mainnet.ting.finance/rpc in your case
+        let endpoint = "/rpc";
+        const { data } = await axios.post( endpoint, { method: "getblockcount", params: [] });
+        document.title = data.result;
+        document.getElementById("content").innerHTML = data.result;  
     </script>
-
 </body>
 
 </html>
