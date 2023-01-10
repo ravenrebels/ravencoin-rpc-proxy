@@ -43,27 +43,36 @@ app.get("/settings", (req, res) => {
 });
 
 
-app.post("/rpc", async (req, res) => {
+app.post("/rpc", (req, res) => {
+    try {
+        //check whitelist
+        const method = req.body.method;
+        const params = req.body.params;
+        const inc = whitelist.includes(method)
+        if (inc === false) {
+            res.status(404).send({
+                error: "Not in whitelist",
+                description: "Method " + method + " is not supported"
+            });
+            console.log("Not whitelisted", method);
+            return;
+        }
 
-
-    //check whitelist
-    const method = req.body.method;
-    const params = req.body.params;
-    const inc = whitelist.includes(method)
-    if (inc === false) {
-        res.status(404).send({
-            error: "Not in whitelist",
-            description: "Method " + method + " is not supported"
-        });
-        console.log("Not whitelisted", method);
-        return;
+        rpc(method, params).then(result => {
+            res.send({ result })
+        }).catch(error => {
+            res.status(500).send({
+                error
+            });
+        })
     }
-
-
-    //Lets mimic the real RPC, respond with "result" attribute
-    const asdf = await rpc(method, params);
-    res.send({ result: asdf });
-
+    catch (e) {
+        console.log("ERROR", e);
+        console.dir(e);
+        res.status(500).send({
+            error: "Something went wrong, check your arguments"
+        })
+    }
 
 })
 
