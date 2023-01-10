@@ -1,13 +1,10 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="en"> 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
-    <title></title>
-</head>
-
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"> 
+</head> 
 <body>
     <main class="container">
         <h1>Ravencoin Testnet - getblockcount</h1>
@@ -15,12 +12,11 @@
     </main>
     <script type="module">
         import axios from 'https://cdn.skypack.dev/axios';
-        //endpoint = https://rvn-rpc-mainnet.ting.finance/rpc in your case
-        let endpoint = "/rpc";
-        const { data } = await axios.post( endpoint, { method: "getblockcount", params: [] });
-        document.title = data.result;
-        document.getElementById("content").innerHTML = data.result;  
+        const URL = "https://rvn-rpc-testnet.ting.finance/rpc"
+        const { data } = await axios.post(URL,
+            { method: "getblockcount", params: [] });
+        document.title = data.result.toLocaleString();
+        document.getElementById("content").innerHTML = data.result.toLocaleString();  
     </script>
-</body>
-
+</body> 
 </html>
