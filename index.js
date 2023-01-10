@@ -31,6 +31,17 @@ app.get("/whitelist", (req, res) => {
     return;
 });
 
+app.get("/settings", (req, res) => {
+
+    const obj = {
+        heading: config.heading,
+        environment: config.environment,
+        endpoint: config.endpoint
+    }
+
+    res.send(obj);
+});
+
 
 app.post("/rpc", async (req, res) => {
 

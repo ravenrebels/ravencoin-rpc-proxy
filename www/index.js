@@ -156,3 +156,12 @@ async function showHelpDialog(procedure) {
 }
 
 work();
+
+//Update endpoint and environment
+
+fetch("/settings")
+    .then(r => r.json())
+    .then(settings => {
+        document.getElementById("environment").innerHTML = settings.environment;
+        document.getElementById("endpoint").innerHTML = settings.endpoint;
+    })

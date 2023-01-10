@@ -10,10 +10,12 @@ function getConfig() {
 
         const template = `
         {
-            "local_port": 80,
-            "username": "dauser",
-            "password": "dapassword",
-            "raven_url": "http://localhost:8888"
+            "endpoint":    "https://api.mydomain.com/rpc",
+            "environment": "Ravencoin Testnet",
+            "local_port":   80,
+            "raven_url":    "http://localhost:8888",
+            "password":     "dapassword",
+            "username":     "dauser",
         }`
 
         console.log("Example content of config.json");
