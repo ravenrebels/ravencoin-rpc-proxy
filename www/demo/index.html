@@ -16,35 +16,17 @@
         <article id="content"></article>
     </main>
 
-    <script>
 
-        async function post(url, body) {
-            const jsonString = JSON.stringify(body);
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: jsonString
-            };
-            const response = await fetch(url, requestOptions);
-            const data = await response.json();
-            return data;
-        }
+    <script type="module"> 
+        import axios from 'https://cdn.skypack.dev/axios'; 
+        const settingsResponse = await axios.get("/settings");
+        const settings = settingsResponse.data;
+        const response = await axios.post(settings.endpoint, { method: "getblockcount", params: [] });
+        document.title = response.data.result;
+        document.getElementById("content").innerHTML = response.data.result; 
 
-
-        async function work() {
-
-            const method = "getblockcount";
-            const params = [];
-            const asdf = await post("https://rpc.ting.finance/rpc", { method, params });
-
-            document.getElementById("content").innerHTML = asdf.result;
-            document.title = asdf.result + " RVN TESTNET";
-
-        }
-
-        work();
-        setInterval(work, 20 * 1000); //Run every 20 seconds
     </script>
+
 </body>
 
 </html>
