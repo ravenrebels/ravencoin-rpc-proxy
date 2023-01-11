@@ -11,10 +11,7 @@ const config = getConfig();
 const port = config.local_port || process.env.PORT || 80;
 
 
-const rpc = getRPC(config.username, config.password, config.raven_url);
-
-
-
+const rpc = getRPC(config.username, config.password, config.raven_url); 
 
 const whitelist = require("./whitelist");
 app.use(express.json());
@@ -48,6 +45,7 @@ app.post("/rpc", (req, res) => {
         //check whitelist
         const method = req.body.method;
         const params = req.body.params;
+        console.log(method, new Date().toLocaleString());
         const inc = whitelist.includes(method)
         if (inc === false) {
             res.status(404).send({
