@@ -1,6 +1,6 @@
 # ravencoin-rpc-proxy
 
-## A open web API for Ravencoin
+## A Web API for Ravencoin
 
 **Purpose**: make Ravencoin blockchain available via HTTP/WEB by exposing the RPC-API via a Proxy that only allows safe procedures.
 
