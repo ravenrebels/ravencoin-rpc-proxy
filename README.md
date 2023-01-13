@@ -4,6 +4,7 @@
 
 **Purpose**: make Ravencoin blockchain available via HTTP/WEB by exposing the RPC-API via a Proxy that only allows safe procedures.
 
+Check out this software live at https://rpc.ting.finance/
 
 ## How do I use this software?
 
