@@ -127,6 +127,8 @@ npm start
 
 
 ## List of Ravencoin RPC calls
+This is a raw list, a lot of these calls are not whitelisted.
+For example we do NOT let developers call procedure `dumpprivkey`
 ```
 == Addressindex ==
 getaddressbalance
