@@ -11,10 +11,36 @@ Check out this software live at https://rpc.ting.finance/
 When your local proxy is up and running you send requests using HTTP Post.
 The body of the request should contain string **method** and array **params** 
 
-### Example using Fetch API
-Example for web browser and Node.js 18+
+### Examples
+
+### Live examples on Code Pen
+Feel free to fork it and play around
+- Get block count https://codepen.io/RavenRebels/full/jOpmErK
+- Address balances https://codepen.io/RavenRebels/pen/RwBVEbW
+
+### Example for web browser and Node.js 18+
 ```
-rpc("getblockcount", []).then(console.log);
+//Get block count
+rpc("getblockcount", []).then(function (count) {
+    console.log("Block count", count);
+});
+
+//Get transactions in mempool
+rpc("getrawmempool", []).then(function (data) {
+    console.log("There are", data.length, "transactions in mempool right now");
+});
+
+//Get specific transaction
+rpc("getrawtransaction", ["301ec56896153463576c47ac40956e58d2b9fa7de87fad39128c5ae0af66b6a4", true]).then(transaction => {
+    console.log("Transaction", transaction.hash, "has", transaction.confirmations, "confirmations");
+})
+
+//Get address balance
+rpc("getaddressbalance", [{ "addresses": ["RXissueSubAssetXXXXXXXXXXXXXWcwhwL"] }]).then(balance => {
+    const sum = balance.balance / 1e8;//divide by 100 000 000;
+    console.log("RXissueSubAssetXXXXXXXXXXXXXWcwhwL balance", sum.toLocaleString());
+})
+
 
 async function rpc(method, params) {
     const data = { method, params };
