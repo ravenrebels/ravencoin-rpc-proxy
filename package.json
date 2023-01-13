@@ -1,7 +1,7 @@
 {
   "name": "ravencoin-rpc-proxy",
   "version": "1.0.0",
-  "description": "A proxy for Ravencoin RPC that blocks insecure calls",
+  "description": "Ravencoin Web API via safe proxy",
   "main": "index.js",
   "dependencies": {
     "@ravenrebels/ravencoin-rpc": "0.1.4",
@@ -9,7 +9,7 @@
     "express": "4.18.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index"
   },
   "repository": {
     "type": "git",

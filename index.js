@@ -17,25 +17,19 @@ const whitelist = require("./whitelist");
 app.use(express.json());
 
 app.use(express.static('www'));
-
-app.use((req, res, next) => {
-    console.log('Time:', Date.now())
-    next()
-})
-
+ 
 app.get("/whitelist", (req, res) => {
     res.send(whitelist);
     return;
 });
 
 app.get("/settings", (req, res) => {
-
+    //Expose public parts of config 
     const obj = {
         heading: config.heading,
         environment: config.environment,
         endpoint: config.endpoint
-    }
-
+    } 
     res.send(obj);
 });
 
@@ -45,8 +39,9 @@ app.post("/rpc", (req, res) => {
         //check whitelist
         const method = req.body.method;
         const params = req.body.params;
-        console.log(method, new Date().toLocaleString());
+       
         const inc = whitelist.includes(method)
+        console.log(method, "whitelisted " + true, new Date().toLocaleString());
         if (inc === false) {
             res.status(404).send({
                 error: "Not in whitelist",
