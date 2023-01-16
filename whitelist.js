@@ -8,7 +8,7 @@ const whitelist = [
 
     //== Assets ==
     "getassetdata",
-   // "getcacheinfo",
+    // "getcacheinfo",
     //"getsnapshot",
     //"issue",
     //"issueunique",
@@ -206,4 +206,11 @@ const whitelist = [
      */
 ]
 
-module.exports = whitelist;
+function isWhitelisted(method) {
+    const inc = whitelist.includes(method) 
+    return inc;
+
+}
+module.exports = {
+    whitelist, isWhitelisted
+};

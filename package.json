@@ -9,7 +9,8 @@
     "express": "4.18.2"
   },
   "scripts": {
-    "start": "node index"
+    "start": "node index",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/ravenrebels/ravencoin-rpc-proxy/issues"
   },
-  "homepage": "https://github.com/ravenrebels/ravencoin-rpc-proxy#readme"
+  "homepage": "https://github.com/ravenrebels/ravencoin-rpc-proxy#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
 }
