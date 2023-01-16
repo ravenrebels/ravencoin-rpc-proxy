@@ -124,6 +124,9 @@ dbcache=4096
 npm start
 ```
 
+## Help with Ravencoin RPC calls, arguments and stuff
+Go to https://rvn-rpc-mainnet.ting.finance/ for in depth description of each RPC call
+![image](https://user-images.githubusercontent.com/9694984/212323158-6ed00511-cfcc-4338-990c-ebb57f590cf0.png)
 
 
 ## List of Ravencoin RPC calls
