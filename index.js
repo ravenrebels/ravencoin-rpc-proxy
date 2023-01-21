@@ -13,6 +13,19 @@ const getConfig = require("./getConfig");
 const { whitelist, isWhitelisted } = require("./whitelist");
 
 
+/* 
+The cache mechanism uses getbestblockhash to determine when to invalidate the cache
+We cant ask for best block has on EVERY request since we can have 200 sim request.
+therefor we store a promise to get best block hash, and that promise is blanked every 300 seconds
+*/
+
+let lastBestBlockHash = null;
+let bestBlockHashPromise = null;
+setInterval(() => {
+    bestBlockHashPromise = null;
+}, 300);
+
+
 
 const app = express()
 app.use(cors())
@@ -52,38 +65,45 @@ app.get("/settings", (req, res) => {
 });
 
 
-let lastBestBlockHash = null;
+
 
 async function addToQueue(request, response) {
 
     async function work() {
 
-        const method = request.body.method;
-        const params = request.body.params;
-        let promise = null;
+        try {
 
-        const shouldCache = cacheService.shouldCache(method, params);
+            const method = request.body.method;
+            const params = request.body.params;
+            let promise = null;
 
-        if (shouldCache === true) {
+            const shouldCache = cacheService.shouldCache(method, params);
 
-            promise = cacheService.get(method, params);
-            if (!promise) {
-                promise = rpc(method, params);
-                cacheService.put(method, params, promise);
+            if (shouldCache === true) {
+
+                promise = cacheService.get(method, params);
+                if (!promise) {
+                    promise = rpc(method, params);
+                    cacheService.put(method, params, promise);
+                }
             }
-        }
-        else {
+            else {
 
-            promise = rpc(method, params);
+                promise = rpc(method, params);
+            }
+            promise.then(result => {
+                return response.send({ result })
+            }).catch(error => {
+                return response.status(500).send({
+                    error
+                });
+            })
+            return promise;
+        } catch (e) {
+            console.log("Error", e);
+            return Promise.resolved();
         }
-        promise.then(result => {
-            return response.send({ result })
-        }).catch(error => {
-            return response.status(500).send({
-                error
-            });
-        })
-        return promise;
+
     }
     queue.add(work);
 };
@@ -103,8 +123,15 @@ app.post("/rpc", async (req, res) => {
             return;
         }
 
+        let p = bestBlockHashPromise; //need a reference if bestBlockHashPromise is set to null by interval
+        if (!p) {
+            p = rpc(methods.getbestblockhash, [])
+            bestBlockHashPromise = p;
+            console.log("Creating NEW best block hash");
+        }
+
         //Clear cache if new best block hash
-        const bestBlockHash = await rpc(methods.getbestblockhash, []);
+        const bestBlockHash = await p;
         if (bestBlockHash !== lastBestBlockHash) {
             cacheService.clear();
             lastBestBlockHash = bestBlockHash;
