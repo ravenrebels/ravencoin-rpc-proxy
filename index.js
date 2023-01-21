@@ -126,8 +126,7 @@ app.post("/rpc", async (req, res) => {
         let p = bestBlockHashPromise; //need a reference if bestBlockHashPromise is set to null by interval
         if (!p) {
             p = rpc(methods.getbestblockhash, [])
-            bestBlockHashPromise = p;
-            console.log("Creating NEW best block hash");
+            bestBlockHashPromise = p; 
         }
 
         //Clear cache if new best block hash
