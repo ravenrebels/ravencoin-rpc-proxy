@@ -22,7 +22,7 @@
                 As a developer, if you want to build something for/on Ravencoin, you can kickstart your development with
                 this RPC service.
             </p>
-            <p>The node is fully indexed and runs on <span id="environment"/>.</p>
+            <p>The node is fully indexed and runs on <span id="environment" />.</p>
             <p>You can send remote procedure calls (RPC) the same way you would if you hade a local node.
                 Whitelisted procedure calls are listed below.
             </p>
@@ -30,10 +30,27 @@
 
         <article>
             <h3>Endpoint</h3>
-            <span id="endpoint"/>
+            <span id="endpoint" />
         </article>
 
-        
+        <article>
+            <h3>Sir, what about perfomance?</h3>
+            <ol>
+                <li>Most requests are cached for the lifespan of the current block.</li>
+                <li>All requests are queued.
+                    <p>
+                        The queue acts as a buffer between the public API endpoint and the Raven core node in order to
+                        smooth intermittent heavy loads that can cause Raven to fail. <br />
+                        This minimize the impact of peaks in demand on availability and responsiveness.
+
+                    </p>
+                </li>
+
+
+            </ol>
+
+
+        </article>
         <article>
             <h3>Whitelisted methods/procedures</h3>
             <select id="procedureSelect">
@@ -43,7 +60,7 @@
         </article>
 
         <article>
-            <h3>Example - Web / JavaScript</h3> 
+            <h3>Example - Web / JavaScript</h3>
             <p><a href="/demo" target="_blank">Live example</a></p>
             <pre><code class="language-html" id="codeExampleWeb"> </code></pre>
 
@@ -55,7 +72,7 @@
         </article>
 
 
- 
+
 
     </main>
 

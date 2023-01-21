@@ -1,11 +1,6 @@
 
-
-/*
-*/
-
-
 const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
-const { default: PQueue } = require('p-queue');
+const { default: PQueue } = require('p-queue'); //NOTE version 6 with support for CommonJS
 const cacheService = require("./cacheService");
 const cors = require('cors')
 const express = require('express');
@@ -14,6 +9,13 @@ const { whitelist, isWhitelisted } = require("./whitelist");
 
 
 /* 
+
+1) All requests to Raven core node is queued using "p-queue" and run concurrently, you set concurrency in config.json
+2) Most requests are cached for the lifespan of the current block
+
+*/
+
+/*
 The cache mechanism uses getbestblockhash to determine when to invalidate the cache
 We cant ask for best block has on EVERY request since we can have 200 sim request.
 therefor we store a promise to get best block hash, and that promise is blanked every 300 seconds
