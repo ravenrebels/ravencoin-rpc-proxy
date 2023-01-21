@@ -35,19 +35,21 @@
 
         <article>
             <h3>Sir, what about perfomance?</h3>
-            <ol>
-                <li>Most requests are cached for the lifespan of the current block.</li>
-                <li>All requests are queued.
-                    <p>
-                        The queue acts as a buffer between the public API endpoint and the Raven core node in order to
-                        smooth intermittent heavy loads that can cause Raven to fail. <br />
-                        This minimize the impact of peaks in demand on availability and responsiveness.
+            <p>
+                To get low latency and to support a massive amount of concurrent requests we Cache and Queue</p>
+            <p>
+                <b> Queue-Based Load Leveling</b><br/>
 
-                    </p>
-                </li>
+                The queue acts as a buffer between the public API endpoint and the Raven core node in order to
+                smooth intermittent heavy loads that can cause Raven to fail.  
+                This minimize the impact of peaks in demand on availability and responsiveness.
 
+            </p>
+            <p>
+                <b>Cache</b><br/>
+                Requests are cached for the lifetime of the current block. This makes the cache completely consistent with the data on the blockchain.
+            </p>
 
-            </ol>
 
 
         </article>

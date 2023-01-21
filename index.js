@@ -121,12 +121,12 @@ async function addToQueue(request, response) {
 
     }
     queue.add(work);
+
 };
 app.post("/rpc", async (req, res) => {
     try {
         //check whitelist
-        const method = req.body.method;
-
+        const method = req.body.method; 
         const inc = isWhitelisted(method);
 
         if (inc === false) {
@@ -152,7 +152,9 @@ app.post("/rpc", async (req, res) => {
         }
 
         //Add RCP call to queue
-        addToQueue(req, res);
+        addToQueue(req, res).catch(e => {
+            console.log("Something went wrong", e);
+        });
     }
     catch (e) {
         console.log("ERROR", e);
