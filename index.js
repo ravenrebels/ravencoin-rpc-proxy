@@ -1,6 +1,8 @@
 
 
-const { getRPC } = require("@ravenrebels/ravencoin-rpc");
+const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
+
+const cacheService = require("./cacheService");
 const cors = require('cors')
 const express = require('express');
 const getConfig = require("./getConfig");
@@ -12,7 +14,6 @@ const port = config.local_port || process.env.PORT || 80;
 
 
 const rpc = getRPC(config.username, config.password, config.raven_url);
-
 
 app.use(express.json());
 
@@ -34,14 +35,15 @@ app.get("/settings", (req, res) => {
 });
 
 
-app.post("/rpc", (req, res) => {
+let lastBestBlockHash = null;
+app.post("/rpc", async (req, res) => {
     try {
         //check whitelist
         const method = req.body.method;
         const params = req.body.params;
 
         const inc = isWhitelisted(method);
-        console.log(method, "whitelisted " + true, new Date().toLocaleString());
+
         if (inc === false) {
             res.status(404).send({
                 error: "Not in whitelist",
@@ -51,10 +53,33 @@ app.post("/rpc", (req, res) => {
             return;
         }
 
-        rpc(method, params).then(result => {
-            res.send({ result })
+        //Clear cache if new best block hash
+        const bestBlockHash = await rpc(methods.getbestblockhash, []);
+        if (bestBlockHash !== lastBestBlockHash) {
+            cacheService.clear();
+            lastBestBlockHash = bestBlockHash;
+        }
+
+        let promise = null;
+
+        const shouldCache = cacheService.shouldCache(method, params);
+        console.log(method, "should cache", shouldCache);
+        if (shouldCache === true) {
+            console.log(method, "should be cached IF")
+            promise = cacheService.get(method, params);
+            if (!promise) {
+                promise = rpc(method, params);
+                cacheService.put(method, params, promise);
+            }
+        }
+        else {
+            console.log(method, "should be cached ELSE");
+            promise = rpc(method, params);
+        }
+        promise.then(result => {
+            return res.send({ result })
         }).catch(error => {
-            res.status(500).send({
+            return res.status(500).send({
                 error
             });
         })
@@ -72,4 +97,7 @@ app.post("/rpc", (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
+
 

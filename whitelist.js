@@ -104,7 +104,7 @@ const whitelist = [
     "getrawtransaction",
     "sendrawtransaction",
     "signrawtransaction",
-    //"testmempoolaccept",
+    "testmempoolaccept",
 
     //== Restricted assets ==
     // "addtagtoaddress",
@@ -206,6 +206,7 @@ const whitelist = [
      */
 ]
 
+ 
 function isWhitelisted(method) {
     const inc = whitelist.includes(method) 
     return inc;
