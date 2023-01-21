@@ -24,6 +24,11 @@ app.get("/whitelist", (req, res) => {
     return;
 });
 
+
+app.get("/getCache", (_, res) => {
+
+    return res.send(cacheService.getKeys());
+});
 app.get("/settings", (req, res) => {
     //Expose public parts of config 
     const obj = {
@@ -63,9 +68,9 @@ app.post("/rpc", async (req, res) => {
         let promise = null;
 
         const shouldCache = cacheService.shouldCache(method, params);
-        console.log(method, "should cache", shouldCache);
+
         if (shouldCache === true) {
-            console.log(method, "should be cached IF")
+
             promise = cacheService.get(method, params);
             if (!promise) {
                 promise = rpc(method, params);
@@ -73,7 +78,7 @@ app.post("/rpc", async (req, res) => {
             }
         }
         else {
-            console.log(method, "should be cached ELSE");
+
             promise = rpc(method, params);
         }
         promise.then(result => {

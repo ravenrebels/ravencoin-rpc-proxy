@@ -3,6 +3,10 @@ let cache = {};
 function createKey(method, params) {
     return JSON.stringify({ method, params });
 }
+
+function getKeys(){
+    return Object.keys(cache);
+}
 function put(method, params, promise) {
     const key = createKey(method, params);
     cache[key] = promise;
@@ -208,4 +212,4 @@ function shouldCache(method) {
 
     return cacheableMethods.includes(method);
 }
-module.exports = { clear, get, put, shouldCache }
+module.exports = { clear, get, getKeys, put, shouldCache }
