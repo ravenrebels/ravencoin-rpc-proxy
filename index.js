@@ -1,15 +1,27 @@
 
 
-const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
+/*
+*/
 
+
+const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
+const { default: PQueue } = require('p-queue');
 const cacheService = require("./cacheService");
 const cors = require('cors')
 const express = require('express');
 const getConfig = require("./getConfig");
 const { whitelist, isWhitelisted } = require("./whitelist");
+
+
+
 const app = express()
 app.use(cors())
 const config = getConfig();
+
+//Default to concurrency 1
+const queue = new PQueue({ concurrency: config.concurrency || 1 });
+
+
 const port = config.local_port || process.env.PORT || 80;
 
 
@@ -41,11 +53,44 @@ app.get("/settings", (req, res) => {
 
 
 let lastBestBlockHash = null;
+
+async function addToQueue(request, response) {
+
+    async function work() {
+
+        const method = request.body.method;
+        const params = request.body.params;
+        let promise = null;
+
+        const shouldCache = cacheService.shouldCache(method, params);
+
+        if (shouldCache === true) {
+
+            promise = cacheService.get(method, params);
+            if (!promise) {
+                promise = rpc(method, params);
+                cacheService.put(method, params, promise);
+            }
+        }
+        else {
+
+            promise = rpc(method, params);
+        }
+        promise.then(result => {
+            return response.send({ result })
+        }).catch(error => {
+            return response.status(500).send({
+                error
+            });
+        })
+        return promise;
+    }
+    queue.add(work);
+};
 app.post("/rpc", async (req, res) => {
     try {
         //check whitelist
         const method = req.body.method;
-        const params = req.body.params;
 
         const inc = isWhitelisted(method);
 
@@ -65,29 +110,8 @@ app.post("/rpc", async (req, res) => {
             lastBestBlockHash = bestBlockHash;
         }
 
-        let promise = null;
-
-        const shouldCache = cacheService.shouldCache(method, params);
-
-        if (shouldCache === true) {
-
-            promise = cacheService.get(method, params);
-            if (!promise) {
-                promise = rpc(method, params);
-                cacheService.put(method, params, promise);
-            }
-        }
-        else {
-
-            promise = rpc(method, params);
-        }
-        promise.then(result => {
-            return res.send({ result })
-        }).catch(error => {
-            return res.status(500).send({
-                error
-            });
-        })
+        //Add RCP call to queue
+        addToQueue(req, res);
     }
     catch (e) {
         console.log("ERROR", e);

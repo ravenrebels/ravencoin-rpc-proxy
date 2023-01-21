@@ -10,6 +10,7 @@ function getConfig() {
 
         const template = `
         {
+            "concurrency": 2,
             "endpoint":    "https://api.mydomain.com/rpc",
             "environment": "Ravencoin Testnet",
             "local_port":   80,
