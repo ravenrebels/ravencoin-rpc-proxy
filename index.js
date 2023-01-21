@@ -101,7 +101,7 @@ async function addToQueue(request, response) {
             return promise;
         } catch (e) {
             console.log("Error", e);
-            return Promise.resolved();
+            return Promise.resolve();
         }
 
     }
@@ -126,7 +126,7 @@ app.post("/rpc", async (req, res) => {
         let p = bestBlockHashPromise; //need a reference if bestBlockHashPromise is set to null by interval
         if (!p) {
             p = rpc(methods.getbestblockhash, [])
-            bestBlockHashPromise = p; 
+            bestBlockHashPromise = p;
         }
 
         //Clear cache if new best block hash
