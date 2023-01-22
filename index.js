@@ -86,13 +86,35 @@ async function addToQueue(request, response) {
 
     async function work() {
 
+        /*
+                First off, already cached operations should NOT be queued, they should return immediately
+                Start with naive implementation with duplicated code
+        */
+
+        const method = request.body.method;
+        const params = request.body.params;
+        let promise = null;
+
+        const shouldCache = cacheService.shouldCache(method, params);
+
+        if (shouldCache === true) {
+            promise = cacheService.get(method, params);
+            if (promise) {
+
+                return promise.then(result => {
+                    return response.send({ result })
+                }).catch(error => {
+                    return response.status(500).send({
+                        error
+                    });
+                })
+            }
+        }
+
+
         try {
 
-            const method = request.body.method;
-            const params = request.body.params;
-            let promise = null;
 
-            const shouldCache = cacheService.shouldCache(method, params);
 
             if (shouldCache === true) {
 
@@ -126,7 +148,7 @@ async function addToQueue(request, response) {
 app.post("/rpc", async (req, res) => {
     try {
         //check whitelist
-        const method = req.body.method; 
+        const method = req.body.method;
         const inc = isWhitelisted(method);
 
         if (inc === false) {
