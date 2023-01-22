@@ -1,6 +1,7 @@
 
 const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
 const { default: PQueue } = require('p-queue'); //NOTE version 6 with support for CommonJS
+const process = require('process'); //to get memory used
 const cacheService = require("./cacheService");
 const cors = require('cors')
 const express = require('express');
@@ -66,8 +67,18 @@ app.get("/whitelist", (req, res) => {
 
 
 app.get("/getCache", (_, res) => {
+    const obj = {}
 
-    return res.send(cacheService.getKeys());
+    obj.numerOfItemsInCache = cacheService.getKeys().length;
+
+
+    // An example displaying the respective memory
+    // usages in megabytes(MB)
+    for (const [key, value] of Object.entries(process.memoryUsage())) {
+        obj[key] = (`Memory usage by ${key}, ${Math.round(value / 1000000)} MB `)
+    }
+
+    return res.send(obj);
 });
 app.get("/settings", (req, res) => {
     //Expose public parts of config 
@@ -95,7 +106,8 @@ async function addToQueue(request, response) {
         const params = request.body.params;
         let promise = null;
 
-        const shouldCache = cacheService.shouldCache(method, params);
+        const shouldCache = cacheService.shouldCache(method);
+
 
         if (shouldCache === true) {
             promise = cacheService.get(method, params);
@@ -111,13 +123,8 @@ async function addToQueue(request, response) {
             }
         }
 
-
         try {
-
-
-
             if (shouldCache === true) {
-
                 promise = cacheService.get(method, params);
                 if (!promise) {
                     promise = rpc(method, params);
@@ -125,7 +132,6 @@ async function addToQueue(request, response) {
                 }
             }
             else {
-
                 promise = rpc(method, params);
             }
             promise.then(result => {
@@ -189,7 +195,7 @@ app.post("/rpc", async (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`RPC Proxy listening on port ${port}`)
 })
 
 
