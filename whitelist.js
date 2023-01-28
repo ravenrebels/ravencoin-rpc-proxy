@@ -30,7 +30,7 @@ const whitelist = [
     "getblockchaininfo",
     "getblockcount",
     "getblockhash",
-    "getblockhashes",
+   // "getblockhashes", //This can kill the service if you ask for all block hashes years back
     "getblockheader",
     "getchaintips",
     "getchaintxstats",
