@@ -123,15 +123,14 @@ async function addToQueue(request, response) {
           const node = getRPCNode();
           const rpc = node.rpc;
 
-          //TODO if rpc call does not work because node is down, set node to active=false
           promise = rpc(method, params);
-          cacheService.put(method, params, promise);
 
           //If promise fails, remove it from cache
           promise.catch((e) => {
             cacheService.remove(method, params);
             console.log("Removed", method, params, "from cache");
           });
+          cacheService.put(method, params, promise);
         }
       } else {
         promise = rpc(method, params);
@@ -147,7 +146,7 @@ async function addToQueue(request, response) {
         });
       return promise;
     } catch (e) {
-      console.log("Error", e);
+      console.log("Error!", e);
       return Promise.resolve();
     }
   }
@@ -176,8 +175,12 @@ app.post("/rpc", async (req, res) => {
 
     let p = bestBlockHashPromise; //need a reference if bestBlockHashPromise is set to null by interval
     if (!p) {
-      const rpc = getRPCNode().rpc;
+      //about to check
+
+      const node = getRPCNode();
+      const rpc = node.rpc;
       p = rpc(methods.getbestblockhash, []);
+
       bestBlockHashPromise = p;
     }
 
