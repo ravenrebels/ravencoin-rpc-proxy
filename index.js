@@ -119,10 +119,10 @@ async function addToQueue(request, response) {
     try {
       if (shouldCache === true) {
         promise = cacheService.get(method, params);
+
         if (!promise) {
           const node = getRPCNode();
           const rpc = node.rpc;
-
           promise = rpc(method, params);
 
           //If promise fails, remove it from cache
@@ -133,6 +133,8 @@ async function addToQueue(request, response) {
           cacheService.put(method, params, promise);
         }
       } else {
+        const node = getRPCNode();
+          const rpc = node.rpc;
         promise = rpc(method, params);
       }
       promise
