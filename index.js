@@ -1,4 +1,5 @@
-const { getRPC, methods } = require("@ravenrebels/ravencoin-rpc");
+const { methods } = require("@ravenrebels/ravencoin-rpc");
+const { getRPCNode, getNodes } = require("./getRPCNode");
 const { default: PQueue } = require("p-queue"); //NOTE version 6 with support for CommonJS
 const process = require("process"); //to get memory used
 const cacheService = require("./cacheService");
@@ -50,8 +51,6 @@ const queue = new PQueue({ concurrency: config.concurrency || 1 });
 
 const port = config.local_port || process.env.PORT || 80;
 
-const rpc = getRPC(config.username, config.password, config.raven_url);
-
 app.use(express.json());
 
 app.use(express.static("www"));
@@ -73,6 +72,10 @@ app.get("/getCache", (_, res) => {
   }
   obj.queueSize = queue.size;
   obj.numberOfRequests = numberOfRequests.toLocaleString();
+
+  const nodes = getNodes();
+
+  obj.nodes = nodes;
   return res.send(obj);
 });
 app.get("/settings", (req, res) => {
@@ -117,8 +120,18 @@ async function addToQueue(request, response) {
       if (shouldCache === true) {
         promise = cacheService.get(method, params);
         if (!promise) {
+          const node = getRPCNode();
+          const rpc = node.rpc;
+
+          //TODO if rpc call does not work because node is down, set node to active=false
           promise = rpc(method, params);
           cacheService.put(method, params, promise);
+
+          //If promise fails, remove it from cache
+          promise.catch((e) => {
+            cacheService.remove(method, params);
+            console.log("Removed", method, params, "from cache");
+          });
         }
       } else {
         promise = rpc(method, params);
@@ -163,6 +176,7 @@ app.post("/rpc", async (req, res) => {
 
     let p = bestBlockHashPromise; //need a reference if bestBlockHashPromise is set to null by interval
     if (!p) {
+      const rpc = getRPCNode().rpc;
       p = rpc(methods.getbestblockhash, []);
       bestBlockHashPromise = p;
     }

@@ -78,13 +78,26 @@ npm install
 Configure your setup in ./config.json
 ```
 {
-    "endpoint": "https://myhost/rpc",
-    "environment": "Ravencoin Testnet",
-    "local_port": 9999,
-    "username": "THE USERNAME FOR MY LOCAL RAVEN CORE NODE",
-    "password": "THE PASSWORD FOR MY LOCAL RAVEN CORE NODE",
-    "raven_url": "http://localhost:8888"
+  "concurrency": 4,
+  "endpoint": "https://rpc.ting.finance/rpc",
+  "environment": "Ravencoin Testnet",
+  "local_port": 9999,
+  "nodes": [
+    {
+      "name": "Node number 1",
+      "username": "dauser",
+      "password": "dapassword",
+      "raven_url": "http://localhost:8888"
+    },
+    {
+      "name": "Nody two tower", 
+      "raven_url": "http://127.0.0.1:8766",
+      "password": "supermega2354ergsecret",
+      "username": "supermegas3435ecwertwertret"
+    }
+  ]
 }
+
   ```
 
 ### Sir, how should my Raven core node be configured?
