@@ -13,6 +13,15 @@
     <main class="container">
       <h3>Statistics</h3>
       <article>
+        <h5>Nodes</h5>
+        <pre id="nodes"></pre>
+      </article>
+      <article>
+        <h5>Methods</h5>
+        <table id="table"></table>
+      </article>
+      <article>
+        <h5>Misc</h5>
         <pre id="stuff"></pre>
       </article>
     </main>
@@ -20,8 +29,59 @@
     <script type="module">
       const response = await fetch("/getCache");
       const data = await response.json();
-      const json = JSON.stringify(data, null, 4);
-      document.getElementById("stuff").innerHTML = json;
+
+      document.getElementById("nodes").innerHTML = JSON.stringify(
+        data.nodes,
+        null,
+        4
+      );
+      document.getElementById("stuff").innerHTML = JSON.stringify(
+        data,
+        null,
+        4
+      );
+
+      document.getElementById("table").innerHTML = getTableHTML(data.methods);
+
+      function getTableHTML(methods) {
+        //Sort methods by date
+
+        const list2 = [];
+        Object.entries(methods).map((entry) =>
+          list2.push({
+            method: entry[0],
+            date: new Date(entry[1]),
+          })
+        );
+
+        const list = list2.sort((a, b) => {
+          const date1 = a[1];
+          const date2 = b[1];
+          if (date1 > date2) {
+            return 1;
+          }
+          if (date2 < date1) {
+            return -1;
+          }
+          return 0;
+        });
+
+        return `
+        <thead>
+            <tr>
+                <th>Method</th><th>Date</th>
+            </thead>
+        <tbody>
+                 ${list.map((entry) => {
+                   const m = entry.method;
+                   const d = entry.date.toLocaleString();
+                   return `
+                   <tr>
+                        <td>${m}</td><td>${d}</td>
+                   </tr>`;
+                 })}
+        </tbody>`;
+      }
     </script>
   </body>
 </html>
