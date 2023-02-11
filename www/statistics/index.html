@@ -41,7 +41,9 @@
         4
       );
 
-      document.getElementById("table").innerHTML = getTableHTML(data.methods);
+      const html = getTableHTML(data.methods);
+      console.log(html);
+      document.getElementById("table").innerHTML = html;
 
       function getTableHTML(methods) {
         //Sort methods by date
@@ -53,33 +55,30 @@
             date: new Date(entry[1]),
           })
         );
-
-        const list = list2.sort((a, b) => {
-          const date1 = a[1];
-          const date2 = b[1];
-          if (date1 > date2) {
-            return 1;
-          }
-          if (date2 < date1) {
+        function sort(a, b) {
+          if (a.date > b.date) {
             return -1;
           }
+          if (b.date > a.date) {
+            return 1;
+          }
           return 0;
-        });
+        }
+        const list = list2.sort(sort);
 
-        return `
-        <thead>
+        console.log(JSON.stringify(list, null, 4));
+        const trList = list.map((entry) => {
+          const m = entry.method;
+          const d = entry.date.toLocaleString();
+          return `<tr><td>${m}</td><td>${d}</td></tr>`;
+        });
+        return ` <thead>
             <tr>
-                <th>Method</th><th>Date</th>
+                <th>Method</th>
+                <th>Date</th>
             </thead>
         <tbody>
-                 ${list.map((entry) => {
-                   const m = entry.method;
-                   const d = entry.date.toLocaleString();
-                   return `
-                   <tr>
-                        <td>${m}</td><td>${d}</td>
-                   </tr>`;
-                 })}
+          ${trList.join("")}
         </tbody>`;
       }
     </script>
