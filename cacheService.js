@@ -1,5 +1,13 @@
 let cache = {};
 
+let methodsRequested = {};
+
+function addMethod(name, date) {
+  methodsRequested[name] = date;
+}
+function getMethods() {
+  return methodsRequested;
+}
 function createKey(method, params) {
   return JSON.stringify({ method, params });
 }
@@ -216,4 +224,13 @@ function shouldCache(method) {
 
   return cacheableMethods.includes(method);
 }
-module.exports = { clear, get, getKeys, put, remove, shouldCache };
+module.exports = {
+  addMethod,
+  clear,
+  get,
+  getKeys,
+  getMethods,
+  put,
+  remove,
+  shouldCache,
+};

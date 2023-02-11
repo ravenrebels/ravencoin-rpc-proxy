@@ -72,7 +72,7 @@ app.get("/getCache", (_, res) => {
   }
   obj.queueSize = queue.size;
   obj.numberOfRequests = numberOfRequests.toLocaleString();
-
+  obj.methods = cacheService.getMethods();
   const nodes = getNodes();
 
   obj.nodes = nodes;
@@ -97,6 +97,8 @@ async function addToQueue(request, response) {
 
     const method = request.body.method;
     const params = request.body.params;
+
+    cacheService.addMethod(method, new Date());
     let promise = null;
 
     const shouldCache = cacheService.shouldCache(method);
@@ -116,6 +118,7 @@ async function addToQueue(request, response) {
       }
     }
 
+    //OK the request was not already cached and handled
     try {
       if (shouldCache === true) {
         promise = cacheService.get(method, params);
@@ -123,6 +126,7 @@ async function addToQueue(request, response) {
         if (!promise) {
           const node = getRPCNode();
           const rpc = node.rpc;
+
           promise = rpc(method, params);
 
           //If promise fails, remove it from cache
@@ -134,7 +138,7 @@ async function addToQueue(request, response) {
         }
       } else {
         const node = getRPCNode();
-          const rpc = node.rpc;
+        const rpc = node.rpc;
         promise = rpc(method, params);
       }
       promise
@@ -177,8 +181,6 @@ app.post("/rpc", async (req, res) => {
 
     let p = bestBlockHashPromise; //need a reference if bestBlockHashPromise is set to null by interval
     if (!p) {
-      //about to check
-
       const node = getRPCNode();
       const rpc = node.rpc;
       p = rpc(methods.getbestblockhash, []);

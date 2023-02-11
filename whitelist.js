@@ -43,7 +43,7 @@ const whitelist = [
     "getspentinfo",
     "gettxout",
     "gettxoutproof",
-    "gettxoutsetinfo",
+   // "gettxoutsetinfo", this method is not "dangerous" but it takes TOO long time
     //"preciousblock",
     //"pruneblockchain",
     //"savemempool",
@@ -73,7 +73,7 @@ const whitelist = [
     //"viewallmessages",
 
     //== Mining ==
-    "getblocktemplate",
+   // "getblocktemplate",
     //"getkawpowhash",
     //"getmininginfo",
     //"getnetworkhashps",

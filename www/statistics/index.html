@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"
+    />
+    <title>Statistics</title>
+  </head>
+  <body>
+    <main class="container">
+      <h3>Statistics</h3>
+      <article>
+        <pre id="stuff"></pre>
+      </article>
+    </main>
+
+    <script type="module">
+      const response = await fetch("/getCache");
+      const data = await response.json();
+      const json = JSON.stringify(data, null, 4);
+      document.getElementById("stuff").innerHTML = json;
+    </script>
+  </body>
+</html>
