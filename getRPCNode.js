@@ -15,6 +15,8 @@ async function healthCheck() {
   for (const node of allNodes) {
     try {
       const a = await node.rpc("getbestblockhash", []);
+      node.bestblockhash = a;
+   
       node.active = true;
     } catch {
       node.active = false;
@@ -45,8 +47,9 @@ function getNodes() {
   const list = [];
   for (const n of allNodes) {
     list.push({
-      name: n.name,
       active: n.active,
+      bestblockhash: n.bestblockhash,
+      name: n.name,
     });
   }
   return list;
