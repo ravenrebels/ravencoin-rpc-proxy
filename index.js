@@ -32,8 +32,8 @@ process.on("unhandledRejection", (reason, promise) => {
 
 /*
 The cache mechanism uses getbestblockhash to determine when to invalidate the cache
-We cant ask for best block has on EVERY request since we can have 200 sim request.
-therefor we store a promise to get best block hash, and that promise is blanked every 300 seconds
+We can't ask for best block has on EVERY request since we can have 200 sim request.
+therefor we store a promise to get best block hash, and that promise is blanked every 300 milliseconds
 */
 
 let lastBestBlockHash = null;
@@ -63,7 +63,7 @@ app.get("/whitelist", (req, res) => {
 app.get("/getCache", (_, res) => {
   const obj = {};
 
-  obj.numerOfItemsInCache = cacheService.getKeys().length;
+  obj.numberOfItemsInCache = cacheService.getKeys().length;
 
   // An example displaying the respective memory
   // usages in megabytes(MB)
@@ -136,7 +136,9 @@ async function addToQueue(request, response) {
           });
           cacheService.put(method, params, promise);
         }
-      } else {
+      } 
+      //Should NOT cache
+      else {
         const node = getRPCNode();
         const rpc = node.rpc;
         promise = rpc(method, params);

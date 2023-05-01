@@ -28,9 +28,20 @@
     </main>
 
     <script type="module">
+      import axios from "https://cdn.skypack.dev/axios";
+
+      async function rpc(method, params = []) {
+        const URL = "/rpc";
+        const axiosResponse = await axios.post(URL, { method, params });
+        return axiosResponse.data.result;
+      }
       const response = await fetch("/getCache");
       const data = await response.json();
 
+      for (let node of data.nodes) {
+        const block = await rpc("getblock", [node.bestblockhash]);
+        node.blockCount = block.height.toLocaleString();
+      }
       document.getElementById("nodes").innerHTML = JSON.stringify(
         data.nodes,
         null,
@@ -43,7 +54,7 @@
       );
 
       const html = getTableHTML(data.methods);
-      console.log(html);
+
       document.getElementById("table").innerHTML = html;
 
       function getTableHTML(methods) {
@@ -67,7 +78,6 @@
         }
         const list = list2.sort(sort);
 
-        console.log(JSON.stringify(list, null, 4));
         const trList = list.map((entry) => {
           const m = entry.method;
           const d = entry.date.toLocaleString();
