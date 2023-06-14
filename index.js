@@ -44,6 +44,10 @@ setInterval(() => {
 
 const app = express();
 app.use(cors());
+
+//Default size limit for request are too small, increase it
+app.use(express.json({limit: '2mb'}));
+
 const config = getConfig();
 
 //Default to concurrency 1
