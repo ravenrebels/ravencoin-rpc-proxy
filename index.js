@@ -215,5 +215,5 @@ app.post("/rpc", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`RPC Proxy listening on port ${port}, call me later`);
+  console.log(`RPC Proxy listening on path /rpc on port port ${port}, call me later`);
 });
