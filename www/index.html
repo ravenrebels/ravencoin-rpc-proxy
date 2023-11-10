@@ -1,89 +1,102 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="pico.min.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="pico.min.css" />
     <title>Ravencoin RPC</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.min.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <main class="container">
-        <h1 id="headline">RPC</h1>
-        <p><i><small>Experimental beta, please report bugs you find to @RavenRebels on Twitter</small></i></p>
-        <p>By <a href="https://twitter.com/RavenRebels">Raven Rebels</a></p>
+      <h1>RPC <rpc-settings key="environment" /></h1>
+      <article>
+        <h2>Sir, what is this?</h2>
 
-        <article>
-            <h2>Sir, what is this?</h2>
-            <p>
-                As a developer, if you want to build something for/on Ravencoin, you can kickstart your development with
-                this RPC service.
-            </p>
-            <p>The node is fully indexed and runs on <span id="environment" />.</p>
-            <p>You can send remote procedure calls (RPC) the same way you would if you hade a local node.
-                Whitelisted procedure calls are listed below.
-            </p>
-        </article>
+        <p>This service provides dedicated access to the blockchain.</p>
 
-        <article>
-            <h3>Endpoint</h3>
-            <span id="endpoint" />
-        </article>
+        <p>
+          As a developer, if you are looking to build something on the
+          <rpc-settings key="environment"></rpc-settings>, this RPC service can
+          jumpstart your development
+        </p>
 
-        <article>
-            <h3>Sir, what about perfomance?</h3>
-            <p>
-                To get low latency and to support a massive amount of concurrent requests we Cache and Queue</p>
-            <p>
-                <b> Queue-Based Load Leveling</b><br/>
+        <p>
+          The node is fully indexed and runs on
+          <rpc-settings key="environment"></rpc-settings>.
+        </p>
+        <p>
+          You can send remote procedure calls (RPC) the same way you would if
+          you hade a local node. Whitelisted procedure calls are listed below.
+        </p>
+        <p>
+          We operate on a best effort basis, doing everything possible to
+          maintain service availability. However, like any online service, we
+          face challenges such as maintenance requirements and unexpected
+          technical issues.
+        </p>
+        <p>
+          Found a bug? Contact us on Twitter
+          <a href="https://twitter.com/RavenRebels">Raven Rebels</a>
+        </p>
+      </article>
 
-                The queue acts as a buffer between the public API endpoint and the Raven core node in order to
-                smooth intermittent heavy loads that can cause Raven to fail.  
-                This minimize the impact of peaks in demand on availability and responsiveness.
+      <article>
+        <h3>Endpoint</h3>
+        <span><rpc-settings key="endpoint"></rpc-settings></span>
+      </article>
 
-            </p>
-            <p>
-                <b>Cache</b><br/>
-                Requests are cached for the lifetime of the current block. This makes the cache completely consistent with the data on the blockchain.
-            </p>
+      <article>
+        <h3>Sir, what about perfomance?</h3>
+        <p>
+          To get low latency and to support a massive amount of concurrent
+          requests we Cache and Queue
+        </p>
+        <p>
+          <b>Queue-Based Load Leveling</b><br />
+          The queue serves as a buffer between the public API endpoint and the
+          blockchain node, aiming to smooth out intermittent heavy loads that
+          could cause the node to fail. This approach minimizes the impact of
+          peak demand on system availability and responsiveness.
+        </p>
+        <p>
+          <b>Cache</b><br />
+          Requests are cached for the duration of the current block, ensuring
+          that the cache remains completely consistent with the data on the
+          blockchain
+        </p>
+      </article>
+      <article>
+        <h3>Whitelisted methods/procedures</h3>
+        <select id="procedureSelect">
+          <option>-</option>
+        </select>
+        <pre><code class="language-javascript" id="help"></code></pre>
+      </article>
 
+      <article>
+        <h3>Example - Web / JavaScript</h3>
+        <p><a href="/demo" target="_blank">Live example</a></p>
+        <pre><code class="language-html" id="codeExampleWeb"> </code></pre>
 
+        <h3>Example - JavaScript/Node.js</h3>
+        <pre><code class="language-javascript" id="codeExample"> </code></pre>
 
-        </article>
-        <article>
-            <h3>Whitelisted methods/procedures</h3>
-            <select id="procedureSelect">
-                <option>-</option>
-            </select>
-            <pre><code class="language-javascript" id="help"></code></pre>
-        </article>
+        <h3>Result</h3>
+        <pre><code class="language-javascript" id="codeExampleResult"></code></pre>
+      </article>
 
-        <article>
-            <h3>Example - Web / JavaScript</h3>
-            <p><a href="/demo" target="_blank">Live example</a></p>
-            <pre><code class="language-html" id="codeExampleWeb"> </code></pre>
-
-            <h3>Example - JavaScript/Node.js</h3>
-            <pre><code class="language-javascript" id="codeExample"> </code></pre>
-
-            <h3>Result</h3>
-            <pre><code class="language-javascript" id="codeExampleResult"></code></pre>
-        </article>
-
-
-        <article>
-            <a href="./statistics">Statistics</a>
-        </article>
-
+      <article>
+        <a href="./statistics">Statistics</a>
+      </article>
     </main>
 
     <script src="./index.js"></script>
-
-
-</body>
-
+  </body>
 </html>
