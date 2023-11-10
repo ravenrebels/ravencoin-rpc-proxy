@@ -2,6 +2,9 @@ Array.prototype.insert = function (index, ...items) {
   this.splice(index, 0, ...items);
 };
 
+//The settings JSON object as promise, will be (re) used by custom elements
+const settingsPromise = fetch("/settings").then((r) => r.json());
+
 function insertLabelBeforeValue(list, label, value) {
   const position = list.indexOf(value);
   list.insert(position, label);
@@ -58,11 +61,15 @@ async function work() {
   async function fetchCodeExample(url, id) {
     fetch(url)
       .then((codeResponse) => codeResponse.text())
-      .then((code) => {
+      .then(async (code) => {
         if (url.indexOf(".html") > -1) {
           code = code.replaceAll("<", "&lt;");
         }
 
+        const settings = await settingsPromise;
+        //Update service endpoints in all examples
+        code = code.replaceAll("$ENDPOINT", settings["endpoint"]);
+        code = code.replaceAll("$ENVIRONMENT", settings["environment"]);
         document.getElementById(id).innerHTML = code;
         Prism.highlightAll();
       });
@@ -86,9 +93,6 @@ async function post(url, body) {
 
 work();
 
-//The settings JSON object as promise, will be (re) used by custom elements
-const settingsPromise = fetch("/settings").then((r) => r.json());
-
 //An HTML element that prints out the value of "endpoint".
 //We want to print out "Ravencoin mainnet" or similar och many places and only fetch setting once
 class Settings extends HTMLElement {
@@ -106,3 +110,21 @@ customElements.define("rpc-settings", Settings);
 settingsPromise.then((settings) => {
   document.title = "RPC " + settings.environment;
 });
+
+function copyEndpoint() {
+  const endpoint = document.getElementById("endpoint").innerText;
+  const button = document.getElementById("copyEndpointButton");
+  const orgButtonText = button.innerText;
+  //Copy to clipboard
+
+  navigator.clipboard.writeText(endpoint).then(() => {});
+  button.innerHTML = "😊";
+
+  setTimeout(() => {
+    button.innerText = orgButtonText;
+  }, 1000);
+}
+//Copy endpoint button
+document
+  .getElementById("copyEndpointButton")
+  .addEventListener("click", copyEndpoint);

@@ -7,12 +7,12 @@
 </head> 
 <body>
     <main class="container">
-        <h1>Ravencoin Mainnet - getblockcount</h1>
+        <h1>$ENVIRONMENT - getblockcount</h1>
         <article id="content"></article>
     </main>
     <script type="module">
         import axios from 'https://cdn.skypack.dev/axios';
-        const URL = "https://rvn-rpc-mainnet.ting.finance/rpc"
+        const URL = "$ENDPOINT"
         const { data } = await axios.post(URL,
             { method: "getblockcount", params: [] });
         document.title = data.result.toLocaleString();
