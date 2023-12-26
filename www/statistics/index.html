@@ -39,8 +39,12 @@
       const data = await response.json();
 
       for (let node of data.nodes) {
-        const block = await rpc("getblock", [node.bestblockhash]);
-        node.blockCount = block.height.toLocaleString();
+        try {
+          const block = await rpc("getblock", [node.bestblockhash]);
+          node.blockCount = block.height.toLocaleString();
+        } catch (e) {
+          console.dir(e);
+        }
       }
       document.getElementById("nodes").innerHTML = JSON.stringify(
         data.nodes,
