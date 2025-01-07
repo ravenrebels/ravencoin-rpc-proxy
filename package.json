@@ -1,6 +1,6 @@
 {
   "name": "ravencoin-rpc-proxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ravencoin Web API via safe proxy",
   "main": "index.js",
   "dependencies": {
