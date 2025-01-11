@@ -93,10 +93,11 @@ app.get("/settings", (req, res) => {
 });
 
 app.get("/rpc", (req, res) => {
-  res.send({
-    description:
-      "Please use the HTTP POST method to proceed. For more details, refer to our documentation.",
-  });
+    res.status(405).set("Allow", "POST")
+        .send({
+            description:
+            "Please use the HTTP POST method to proceed. For more details, refer to our documentation.",
+        });
 });
 async function addToQueue(request, response) {
   async function work() {
